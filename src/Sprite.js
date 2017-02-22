@@ -67,8 +67,8 @@ export default class Sprite extends EventDispatcher {
 		}
 	}
 
-	progressTo = (num, loopDir) => {
-		console.log('progressTo', num, loopDir)
+	progressTo = (num) => {
+		console.log('progressTo', num)
 		num = this._limit(num)
 		if (this._progress !== num && this._dest !== num) {
 			this._dest = num
@@ -76,7 +76,6 @@ export default class Sprite extends EventDispatcher {
 			TweenLite.to(this, dur, {
 				ease: this.ease,
 				onComplete: this._resetDest,
-				onCompleteParams: [loopDir],
 				progress: num,
 			})
 		}
@@ -96,16 +95,19 @@ export default class Sprite extends EventDispatcher {
 
 	play = (loop = false) => {
 		console.log('play')
-		this.progressTo(Math.round(this._progress + 0.5), loop ? 1 : null)
+		this._loopDir = loop ? 1 : null
+		this.progressTo(Math.round(this._progress + 0.5))
 	}
 
 	rewind = (loop = false) => {
-		this.progressTo(Math.round(this._progress - 0.500000001), loop ? -1 : null)
+		this._loopDir = loop ? -1 : null
+		this.progressTo(Math.round(this._progress - 0.500000001))
 	}
 
 	stop = () => {
 		console.log('stop')
 		this._dest = null
+		this._loopDir = null
 		TweenLite.killTweensOf(this)
 	}
 
@@ -125,7 +127,7 @@ export default class Sprite extends EventDispatcher {
 
 	_frameToProgress(integer) {
 		if (this.loop) {
-			return integer / (this._frames)
+			return integer / this._frames
 		} else {
 			return integer / (this._frames - 1)
 		}
@@ -139,13 +141,13 @@ export default class Sprite extends EventDispatcher {
 		}
 	}
 
-	_resetDest = (loopDir) => {
-		console.log('_resetDest', loopDir)
+	_resetDest = () => {
+		console.log('_resetDest')
 		this._dest = null
-		if (loopDir === 1) {
-			this.progressTo(this._progress + 1, loopDir)
-		} else if (loopDir === -1) {
-			this.progressTo(this._progress - 1, loopDir)
+		if (this._loopDir === 1) {
+			this.progressTo(this._progress + 1)
+		} else if (this._loopDir === -1) {
+			this.progressTo(this._progress - 1)
 		}
 	}
 }
