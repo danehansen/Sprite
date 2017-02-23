@@ -1,6 +1,4 @@
-import Timer from './index'
+import Sprite from './index'
+import { putClassOnWindow } from '@danehansen/package-helpers'
 
-if (typeof window !== undefined) {
-  window.danehansen = window.danehansen || {}
-  window.danehansen.Sprite = Sprite
-}
+putClassOnWindow(Sprite, 'Sprite')

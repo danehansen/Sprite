@@ -35,13 +35,14 @@ var Sprite = function (_EventDispatcher) {
 		_this._actualFrame = 0;
 		_this._dest = null;
 		_this.ease = 'Linear.easeNone';
+		_this.element = element;
+		_this._style = element.style;
+		_this._columns = columns;
+		_this._frames = frames;
 
-		if (element) {
-			_this.element = element;
-			_this._columns = columns;
-			_this._frames = frames;
-			_this.resize();
-		}
+		var rows = Math.ceil(frames / columns);
+		_this._style.backgroundSize = columns * 100 + '% ' + rows * 100 + '%';
+		_this.resize();
 		return _this;
 	}
 
@@ -86,14 +87,17 @@ var Sprite = function (_EventDispatcher) {
 
 Sprite.ENTER_FRAME = 'ENTER_FRAME';
 Sprite.COMPLETE = 'COMPLETE';
-Sprite.REVERSE_COMPLETE = 'REVERSE_COMPLETE';
+Sprite.REWIND_COMPLETE = 'REWIND_COMPLETE';
 
 var _initialiseProps = function _initialiseProps() {
 	var _this2 = this;
 
 	this.resize = function () {
-		_this2._width = _this2.element.offsetWidth;
-		_this2._height = _this2.element.offsetHeight;
+		var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this2.element.offsetWidth;
+		var height = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _this2.element.offsetHeight;
+
+		_this2._width = width;
+		_this2._height = height;
 		_this2._showFrame(_this2._frame);
 	};
 
@@ -119,8 +123,8 @@ var _initialiseProps = function _initialiseProps() {
 				_this2._showFrame(dest);
 				_this2.dispatchEvent(Sprite.ENTER_FRAME);
 			}
-			if (dispatch && value % 1 == 0) {
-				_this2.dispatchEvent(forward ? Sprite.COMPLETE : Sprite.REVERSE_COMPLETE);
+			if (dispatch && value % 1 === 0) {
+				_this2.dispatchEvent(forward ? Sprite.COMPLETE : Sprite.REWIND_COMPLETE);
 			}
 		}
 	};
@@ -133,7 +137,7 @@ var _initialiseProps = function _initialiseProps() {
 		}
 	};
 
-	this.progressTo = function (num, loopDir) {
+	this.progressTo = function (num) {
 		num = _this2._limit(num);
 		if (_this2._progress !== num && _this2._dest !== num) {
 			_this2._dest = num;
@@ -141,7 +145,6 @@ var _initialiseProps = function _initialiseProps() {
 			TweenLite.to(_this2, dur, {
 				ease: _this2.ease,
 				onComplete: _this2._resetDest,
-				onCompleteParams: [loopDir],
 				progress: num
 			});
 		}
@@ -159,25 +162,32 @@ var _initialiseProps = function _initialiseProps() {
 		_this2.frame(_this2._frame - 1);
 	};
 
-	this.play = function (loop) {
-		_this2.progressTo(Math.round(_this2._progress + 0.5), loop === true ? 1 : null);
+	this.play = function () {
+		var loop = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+		_this2._loopDir = loop ? 1 : null;
+		_this2.progressTo(Math.round(_this2._progress + 0.5));
 	};
 
-	this.rewind = function (loop) {
-		_this2.progressTo(Math.round(_this2._progress - 0.500000001), loop === true ? -1 : null);
+	this.rewind = function () {
+		var loop = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+		_this2._loopDir = loop ? -1 : null;
+		_this2.progressTo(Math.round(_this2._progress - 0.500000001));
 	};
 
 	this.stop = function () {
 		_this2._dest = null;
+		_this2._loopDir = null;
 		TweenLite.killTweensOf(_this2);
 	};
 
-	this._resetDest = function (loopDir) {
+	this._resetDest = function () {
 		_this2._dest = null;
-		if (loopDir === 1) {
-			_this2.progressTo(_this2._progress + 1, loopDir);
-		} else if (loopDir === -1) {
-			_this2.progressTo(_this2._progress - 1, loopDir);
+		if (_this2._loopDir === 1) {
+			_this2.progressTo(_this2._progress + 1);
+		} else if (_this2._loopDir === -1) {
+			_this2.progressTo(_this2._progress - 1);
 		}
 	};
 };

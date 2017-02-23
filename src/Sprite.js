@@ -4,7 +4,7 @@ const TweenLite = typeof __BROWSER__ === 'undefined' ? require('gsap/TweenLite')
 export default class Sprite extends EventDispatcher {
 	static ENTER_FRAME = 'ENTER_FRAME'
 	static COMPLETE = 'COMPLETE'
-	static REVERSE_COMPLETE = 'REVERSE_COMPLETE'
+	static REWIND_COMPLETE = 'REWIND_COMPLETE'
 
 	constructor(element, columns, frames, loop = false, frameRate = 60) {
 		super()
@@ -16,18 +16,19 @@ export default class Sprite extends EventDispatcher {
 		this._actualFrame = 0
 		this._dest = null
 		this.ease = 'Linear.easeNone'
+		this.element = element
+		this._style = element.style
+		this._columns = columns
+		this._frames = frames
 
-		if (element) {
-			this.element = element
-			this._columns = columns
-			this._frames = frames
-			this.resize()
-		}
+		const rows = Math.ceil(frames / columns)
+		this._style.backgroundSize = `${columns * 100}% ${rows * 100}%`
+		this.resize()
 	}
 
-	resize = () => {
-		this._width = this.element.offsetWidth
-		this._height = this.element.offsetHeight
+	resize = (width = this.element.offsetWidth, height = this.element.offsetHeight) => {
+		this._width = width
+		this._height = height
 		this._showFrame(this._frame)
 	}
 
@@ -54,7 +55,7 @@ export default class Sprite extends EventDispatcher {
 				this.dispatchEvent(Sprite.ENTER_FRAME)
 			}
 			if (dispatch && value % 1 === 0) {
-				this.dispatchEvent(forward ? Sprite.COMPLETE : Sprite.REVERSE_COMPLETE)
+				this.dispatchEvent(forward ? Sprite.COMPLETE : Sprite.REWIND_COMPLETE)
 			}
 		}
 	}
@@ -68,7 +69,6 @@ export default class Sprite extends EventDispatcher {
 	}
 
 	progressTo = (num) => {
-		console.log('progressTo', num)
 		num = this._limit(num)
 		if (this._progress !== num && this._dest !== num) {
 			this._dest = num
@@ -93,19 +93,17 @@ export default class Sprite extends EventDispatcher {
 		this.frame(this._frame - 1)
 	}
 
-	play = (loop = false) => {
-		console.log('play')
+	play = (loop = false) => { // TODO .play(false) not behaving correctly on looping Sprite
 		this._loopDir = loop ? 1 : null
 		this.progressTo(Math.round(this._progress + 0.5))
 	}
 
-	rewind = (loop = false) => {
+	rewind = (loop = false) => { // TODO .rewind(false) not behaving correctly on looping Sprite
 		this._loopDir = loop ? -1 : null
 		this.progressTo(Math.round(this._progress - 0.500000001))
 	}
 
 	stop = () => {
-		console.log('stop')
 		this._dest = null
 		this._loopDir = null
 		TweenLite.killTweensOf(this)
@@ -142,7 +140,6 @@ export default class Sprite extends EventDispatcher {
 	}
 
 	_resetDest = () => {
-		console.log('_resetDest')
 		this._dest = null
 		if (this._loopDir === 1) {
 			this.progressTo(this._progress + 1)
