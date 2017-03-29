@@ -1,4 +1,4 @@
 import Sprite from './index'
-import { putClassOnWindow } from '@danehansen/package-helpers'
+import * as packageHelpers from '@danehansen/package-helpers'
 
-putClassOnWindow(Sprite, 'Sprite')
+packageHelpers.putClassOnWindow(Sprite, 'Sprite')

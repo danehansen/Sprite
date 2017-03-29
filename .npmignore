@@ -1,0 +1,10 @@
+.DS_Store
+.nyc_output/
+coverage/
+node_modules/
+npm-debug.log
+.git/
+.gitignore
+img/
+danehansen-Sprite.min.js
+index.html

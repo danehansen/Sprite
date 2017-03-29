@@ -5,24 +5,14 @@
     <title>Sprite</title>
     <link href='https://danehansen.github.io/package-helpers/styles.css' rel='stylesheet' />
     <style>
-      #basic figure {
-        background-image: url(img/elephant_sprite.jpg);
-        height: 138px;
-        width: 220px;
-      }
-
-      #looping figure {
+      figure {
         background-image: url(img/elephant_sprite_loop.jpg);
         height: 138px;
         width: 220px;
       }
 
       @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-        #basic figure {
-          background-image: url(img/elephant_sprite@2x.jpg);
-        }
-
-        #looping figure {
+        figure {
           background-image: url(img/elephant_sprite_loop@2x.jpg);
         }
       }
@@ -46,7 +36,7 @@
 
 <h2>Installation</h2>
 
-<p><code>npm install --save @danehansen/color</code></p>
+<p><code>npm install --save @danehansen/sprite</code></p>
 
 <h2>Usage</h2>
 
@@ -69,51 +59,55 @@ var s = new Sprite(document.getElementById('sprite'), 4, 30);
 <h2>Public Constants</h2>
 
 <ul>
-<li><strong>COMPLETE</strong> : String = 'COMPLETE'
-[static] The Sprite.COMPLETE constant defines the value of the type property of a complete event object.</li>
-<li><strong>ENTER&#95;FRAME</strong> : String = 'ENTER&#95;FRAME'
-[static] The Sprite.ENTER_FRAME constant defines the value of the type property of a enterFrame event object.</li>
-<li><strong>REWIND&#95;COMPLETE</strong> : String = 'REWIND&#95;COMPLETE'
-[static] The Sprite.REWIND&#95;COMPLETE constant defines the value of the type property of a reverseComplete event object.Causes the sprite to stop any playback.</li>
+<li><strong>COMPLETE</strong> : String = 'COMPLETE' <br />
+[static] The Sprite.COMPLETE constant defines the value of the type property of a COMPLETE event object.</li>
+<li><strong>ENTER&#95;FRAME</strong> : String = 'ENTER&#95;FRAME' <br />
+[static] The Sprite.ENTER_FRAME constant defines the value of the type property of a ENTER&#95;FRAME event object.</li>
+<li><strong>REWIND&#95;COMPLETE</strong> : String = 'REWIND&#95;COMPLETE' <br />
+[static] The Sprite.REWIND&#95;COMPLETE constant defines the value of the type property of a REWIND&#95;COMPLETE event object.</li>
 </ul>
 
 <h2>Public Properties</h2>
 
 <ul>
-<li><strong>ease</strong> : Function
+<li><strong>ease</strong> : Function <br />
 Easing method used to move playhead. Set to Linear.easeNone by default.</li>
-<li><strong>element</strong> : Element
+<li><strong>element</strong> : Element <br />
 [Read-only] DOM Element manipulated.</li>
-<li><strong>frameRate</strong> : unit
+<li><strong>frameRate</strong> : unit <br />
 The rate per second at which the sprite will play through. Set to 60 by default.</li>
-<li><strong>loop</strong> : Boolean
-Whether or not the sprite instance is intended to play as a loop. If the beginning and end sprite frames are the same, then you want this set to true. Otherwise the sprite is confined to a finite timeline of 0 to 1.</li>
+<li><strong>frames</strong> : uint <br />
+[Read-only] Number of frames in sprite.</li>
 </ul>
 
 <h2>Public Methods</h2>
 
 <ul>
-<li><strong>Sprite</strong>(element:Element, columns:uint, totalFrames:uint, loop:Boolean = false, frameRate:uint = 60)
+<li><strong>Sprite</strong>(element:Element, columns:uint, totalFrames:uint, loop:Boolean = false, frameRate:uint = 60) <br />
 Creates a Sprite object, using a provided DOM element, number of columns of the sprite sheet background image, the total number of frames, whether it will loop or not, and the frame rate.</li>
-<li><strong>frame</strong>(value:int):*
+<li><strong>destroy</strong>() <br />
+Kills any running animation of the sprite as well as calls clearEventListeners on the super class.</li>
+<li><strong>frame</strong>(value:int):* <br />
 Gets or sets the sprite’s frame. In a typical forward/rewind sprite, this number is limited between 0 and the total number of frames minus 1. In a looping sprite, this number can wrap and even be negative.</li>
-<li><strong>frameTo</strong>(value:Number)
+<li><strong>frameTo</strong>(value:Number) <br />
 Similar to setting the frame, except that the sprite will play to that frame at the current frame rate.</li>
-<li><strong>nextFrame</strong>()
+<li><strong>loop</strong>(value:Boolean):* <br />
+Gets or sets the sprite’s loop value. If the beginning and end sprite frames are the same, then you want this set to true. Otherwise the sprite is confined to a finite timeline of 0 to 1.</li>
+<li><strong>nextFrame</strong>() <br />
 Increments the sprite by one frame.</li>
-<li><strong>play</strong>(loop:Boolean = false)
+<li><strong>play</strong>(loop:Boolean = false) <br />
 Causes the sprite to play at the current frame rate until the end frame is reached. If loop is set to true and is a looping type sprite, the sprite will play indefinitely.</li>
-<li><strong>prevFrame</strong>()
+<li><strong>prevFrame</strong>() <br />
 Decrements the sprite by one frame.</li>
-<li><strong>progress</strong>(value:Number):*
+<li><strong>progress</strong>(value:Number):* <br />
 Gets or sets the sprite’s progress. In a typical forward/rewind sprite, this number is limited between 0 and 1. In a looping sprite, this number can wrap and even be negative.</li>
-<li><strong>progressTo</strong>(value:Number)
+<li><strong>progressTo</strong>(value:Number) <br />
 Similar to setting the progress, except that the sprite will play to that progress point at the current frame rate.</li>
-<li><strong>resize</strong>()
+<li><strong>resize</strong>() <br />
 Causes the sprite to recalculate it’s size. Only needed if the element has dynamic CSS sizing or if the element has been manually sized using JavaScript.</li>
-<li><strong>rewind</strong>(loop:Boolean = false)
+<li><strong>rewind</strong>(loop:Boolean = false) <br />
 Causes the sprite to play backwards at the current frame rate until the first frame is reached. If loop is set to true and is a looping type sprite, the sprite will play indefinitely.</li>
-<li><strong>stop</strong>()
+<li><strong>stop</strong>() <br />
 Causes the sprite to stop any playback.</li>
 </ul>
 
@@ -128,133 +122,129 @@ Dispatched whenever a Sprite object reaches a new frame.</li>
 Dispatched whenever a Sprite object reaches it’s first frame.</li>
 </ul>
 
-    <div id='basic'>
-      <h2>EXAMPLE 1: BASIC SPRITE</h2>
-      <figure id='basicSprite'></figure>
-      <pre><code>var basicSprite = new Sprite(document.getElementById('basicSprite'), 4, 30);</code></pre>
-      <button id='basicRewind'>basicSprite.rewind();</button>
-      <button id='basicPrev'>basicSprite.prevFrame();</button>
-      <button id='basicStop'>basicSprite.stop();</button>
-      <button id='basicNext'>basicSprite.nextFrame();</button>
-      <button id='basicPlay'>basicSprite.play();</button>
-      <code><pre>basicSprite.progress(<span id='spriteProgress'>0</span>);</pre></code>
-      <input id='basicProgress' type='range' max='1' step='0.01' value='0'/>
-      <code><pre>basicSprite.frame(<span id='spriteFrame'>0</span>);</pre></code>
-      <input id='basicFrame' type='range' max='29' value='0'/>
-      <code><pre>basicSprite.progressTo(<span id='spriteProgressTo'>0</span>);</pre></code>
-      <input id='basicProgressTo' type='range' max='1' step='0.01' value='0'/>
-      <code><pre>basicSprite.frameTo(<span id='spriteFrameTo'>0</span>);</pre></code>
-      <input id='basicFrameTo' type='range' max='29' value='0'/>
-    </div>
-    <div id='looping'>
-      <h2>EXAMPLE 2: LOOPING SPRITE</h2>
-      <figure id='loopingSprite'></figure>
-      <pre><code>var loopingSprite = new Sprite(document.getElementById('loopingSprite'), 4, 30, true, 24);</code></pre>
-      <button id='loopingBackward'>loopingSprite.rewind(true);</button>
-      <button id='loopingRewind'>loopingSprite.rewind();</button>
-      <button id='loopingPrev'>loopingSprite.prevFrame();</button>
-      <button id='loopingStop'>loopingSprite.stop();</button>
-      <button id='loopingNext'>loopingSprite.nextFrame();</button>
-      <button id='loopingPlay'>loopingSprite.play();</button>
-      <button id='loopingForward'>loopingSprite.play(true);</button>
-      <form>
-        <code><pre>loopingSprite.progress(<span id='loopingProgressVal'>0</span>);</pre></code>
-        <input id='loopingProgress' type='range' step='0.01' value='0' max='1'/>
-      </form>
-      <form>
-        <code><pre>loopingSprite.frame(<span id='loopingFrameVal'>0</span>);</pre></code>
-        <input id='loopingFrame' type='range' value='0' max='29'/>
-      </form>
-      <form>
-        <code><pre>loopingSprite.progressTo(<span id='loopingProgressToVal'>0</span>);</pre></code>
-        <input id='loopingProgressTo' type='range' step='0.01' value='0' max='1'/>
-      </form>
-      <form>
-        <code><pre>loopingSprite.frameTo(<span id='loopingFrameToVal'>0</span>);</pre></code>
-        <input id='loopingFrameTo' type='range' value='0' max='29'/>
-      </form>
+    <div id='example'>
+      <h2>EXAMPLE</h2>
+      <figure id='sprite'></figure>
+      <pre><code>var sprite = new Sprite(document.getElementById('basicSprite'), 4, 30);</code></pre>
+      <button id='rewindButton'>sprite.rewind();</button>
+      <button id='prevButton'>sprite.prevFrame();</button>
+      <button id='stopButton'>sprite.stop();</button>
+      <button id='nextButton'>sprite.nextFrame();</button>
+      <button id='playButton'>sprite.play();</button>
+      <code><pre>sprite.progress(<span class='spriteProgress'>0</span>);</pre></code>
+      <input id='progressRange' type='range' max='1' step='0.01' value='0'/>
+      <code><pre>sprite.frame(<span class='spriteFrame'>0</span>);</pre></code>
+      <input id='frameRange' type='range' max='29' value='0'/>
+      <code><pre>sprite.progressTo(<span class='spriteProgress'>0</span>);</pre></code>
+      <button id='progressToButton0'>0</button>
+      <button id='progressToButton1'>0.33</button>
+      <button id='progressToButton2'>0.66</button>
+      <button id='progressToButton3'>1</button>
+      <code><pre>sprite.frameTo(<span class='spriteFrame'>0</span>);</pre></code>
+      <button id='frameToButton0'>0</button>
+      <button id='frameToButton1'>10</button>
+      <button id='frameToButton2'>20</button>
+      <button id='frameToButton3'>29</button>
+      <code><pre>sprite.loop(<span id='spriteLoop'>false</span>);</pre></code>
+      <input id='loopCheckbox' type='checkbox' value='false'/>
     </div>
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenLite.min.js'></script>
-    <script src='./danehansen-EventDispatcher.min.js'></script>
+    <script src='https://danehansen.github.io/math/danehansen-math.min.js'></script>
+    <script src='https://danehansen.github.io/EventDispatcher/danehansen-EventDispatcher.min.js'></script>
     <script src='./danehansen-Sprite.min.js'></script>
     <script>
       (function() {
-          var Sprite = danehansen.Sprite;
+        var Sprite = danehansen.Sprite;
 
-        //basic sprite
-          var basicSprite = new Sprite(document.getElementById('basicSprite'), 4, 30);
+        var sprite = new Sprite(document.getElementById('sprite'), 4, 30, false, 24);
+        var progressRangeDown = false;
+        var frameRangeDown = false;
 
-          document.getElementById('basicRewind').addEventListener('click', basicSprite.rewind);
-          document.getElementById('basicPrev').addEventListener('click', basicSprite.prevFrame);
-          document.getElementById('basicStop').addEventListener('click', basicSprite.stop);
-          document.getElementById('basicNext').addEventListener('click', basicSprite.nextFrame);
-          document.getElementById('basicPlay').addEventListener('click', basicSprite.play);
-          document.getElementById('basicProgress').addEventListener('input', function(evt) {
-            var val = parseFloat(evt.target.value);
-            basicSprite.progress(val);
-            document.getElementById('spriteProgress').innerHTML = val;
-          });
-          document.getElementById('basicFrame').addEventListener('input', function(evt) {
-            var val = parseFloat(evt.target.value);
-            basicSprite.frame(val);
-            document.getElementById('spriteFrame').innerHTML = val;
-          });
-          document.getElementById('basicProgressTo').addEventListener('input', function(evt) {
-            var val = parseFloat(evt.target.value);
-            basicSprite.progressTo(val);
-            document.getElementById('spriteProgressTo').innerHTML = val;
-          });
-          document.getElementById('basicFrameTo').addEventListener('input', function(evt) {
-            var val = parseFloat(evt.target.value);
-            basicSprite.frameTo(val);
-            document.getElementById('spriteFrameTo').innerHTML = val;
-          });
-          basicSprite.addEventListener(Sprite.ENTER_FRAME, logEvent);
-          basicSprite.addEventListener(Sprite.COMPLETE, logEvent);
-          basicSprite.addEventListener(Sprite.REWIND_COMPLETE, logEvent);
-
-        //looping sprite
-          var loopingSprite = new Sprite(document.getElementById('loopingSprite'), 4, 30, true, 24);
-
-          document.getElementById('loopingBackward').addEventListener('click', function() {
-            loopingSprite.rewind(true);
-          });
-          document.getElementById('loopingRewind').addEventListener('click', loopingSprite.rewind);
-          document.getElementById('loopingPrev').addEventListener('click', loopingSprite.prevFrame);
-          document.getElementById('loopingStop').addEventListener('click', loopingSprite.stop);
-          document.getElementById('loopingNext').addEventListener('click', loopingSprite.nextFrame);
-          document.getElementById('loopingPlay').addEventListener('click', loopingSprite.play);
-          document.getElementById('loopingForward').addEventListener('click', function() {
-            loopingSprite.play(true);
-          });
-          document.getElementById('loopingProgress').addEventListener('input', function(evt) {
-            var val = parseFloat(evt.target.value);
-            loopingSprite.progress(val);
-            document.getElementById('loopingProgressVal').innerHTML = val;
-          });
-          document.getElementById('loopingFrame').addEventListener('input', function(evt) {
-            var val = parseFloat(evt.target.value);
-            loopingSprite.frame(val);
-            document.getElementById('loopingFrameVal').innerHTML = val;
-          });
-          document.getElementById('loopingProgressTo').addEventListener('input', function(evt) {
-            var val = parseFloat(evt.target.value);
-            loopingSprite.progressTo(val);
-            document.getElementById('loopingProgressToVal').innerHTML = val;
-          });
-          document.getElementById('loopingFrameTo').addEventListener('input', function(evt) {
-            var val = parseFloat(evt.target.value);
-            loopingSprite.frameTo(val);
-            document.getElementById('loopingFrameToVal').innerHTML = val;
-          });
-          loopingSprite.addEventListener(Sprite.ENTER_FRAME, logEvent);
-          loopingSprite.addEventListener(Sprite.COMPLETE, logEvent);
-          loopingSprite.addEventListener(Sprite.REWIND_COMPLETE, logEvent);
+        document.getElementById('rewindButton').addEventListener('click', sprite.rewind);
+        document.getElementById('prevButton').addEventListener('click', sprite.prevFrame);
+        document.getElementById('stopButton').addEventListener('click', sprite.stop);
+        document.getElementById('nextButton').addEventListener('click', sprite.nextFrame);
+        document.getElementById('playButton').addEventListener('click', sprite.play);
+        var progressRange = document.getElementById('progressRange')
+        progressRange.addEventListener('input', function(evt) {
+          var val = parseFloat(evt.target.value);
+          sprite.progress(val);
+        });
+        progressRange.addEventListener('mousedown', function(evt) {
+          progressRangeDown = true;
+        });
+        progressRange.addEventListener('mouseup', function(evt) {
+          progressRangeDown = false;
+        });
+        var frameRange = document.getElementById('frameRange')
+        frameRange.addEventListener('input', function(evt) {
+          var val = parseFloat(evt.target.value);
+          sprite.frame(val);
+        });
+        frameRange.addEventListener('mousedown', function(evt) {
+          frameRangeDown = true;
+        });
+        frameRange.addEventListener('mouseup', function(evt) {
+          frameRangeDown = false;
+        });
+        for (var i = 0; i < 4; i++) {
+          var button = document.getElementById('progressToButton' + i)
+          button.addEventListener('click', sprite.progressTo.bind(null, i / 3));
+          button = document.getElementById('frameToButton' + i)
+          button.addEventListener('click', sprite.frameTo.bind(null, i * 10));
+        }
+        document.getElementById('loopCheckbox').addEventListener('click', function(evt) {
+          var checked = evt.target.checked;
+          document.getElementById('spriteLoop').innerHTML = checked;
+          sprite.loop(checked);
+          var maxFrame = sprite.frames - (checked ? 0 : 1);
+          document.getElementById('frameToButton3').innerHTML = maxFrame;
+          document.getElementById('frameRange').setAttribute('max', maxFrame);
+        })
+        sprite.addEventListener(Sprite.ENTER_FRAME, logEvent);
+        sprite.addEventListener(Sprite.COMPLETE, logEvent);
+        sprite.addEventListener(Sprite.REWIND_COMPLETE, logEvent);
 
         //logging events
           function logEvent(evt) {
-            console.log(evt.type, evt.type === Sprite.ENTER_FRAME ? evt.target.frame() : evt.target.progress(), evt.target);
+            var progress = sprite.progress();
+            var progressStr = progress.toFixed(2);
+            Array.prototype.map.call(document.querySelectorAll('.spriteProgress'), function(element) {
+              element.innerHTML = progressStr;
+            })
+            if (!progressRangeDown) {
+              if (sprite.loop()) {
+                while(progress < 1) {
+                  progress++;
+                }
+                progress = progress % 1;
+              }
+              progressRange.value = progress;
+            }
+
+            var frame = sprite.frame();
+            Array.prototype.map.call(document.querySelectorAll('.spriteFrame'), function(element) {
+              element.innerHTML = frame;
+            })
+            if (!frameRangeDown) {
+              while(frame < 1) {
+                frame += sprite.frames;
+              }
+              frame = frame % sprite.frames;
+              frameRange.value = frame;
+            }
+
+            var value;
+            switch(evt.type) {
+              case Sprite.ENTER_FRAME:
+                value = evt.target.frame();
+                break;
+              default:
+                value = evt.target.progress();
+                break;
+            }
+            console.log(evt.type, value, evt.target);
           }
       })();
     </script>
