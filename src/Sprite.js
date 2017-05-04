@@ -1,8 +1,8 @@
-const EventDispatcher = typeof __BROWSER__ === 'undefined' ? require('@danehansen/event-dispatcher').default : (((window || {}).danehansen || {}).EventDispatcher || {})
-const { modulo } = typeof __BROWSER__ === 'undefined' ? require('@danehansen/math') : (((window || {}).danehansen || {}).math || {})
-const TweenLite = typeof __BROWSER__ === 'undefined' ? require('gsap/TweenLite') : (window || {}).TweenLite
+import EventDispatcher from '@danehansen/event-dispatcher'
+import { modulo } from '@danehansen/math'
+import TweenLite from 'gsap/TweenLite'
 
-export default class Sprite extends EventDispatcher {
+class Sprite extends EventDispatcher {
   static ENTER_FRAME = 'ENTER_FRAME'
   static COMPLETE = 'COMPLETE'
   static REWIND_COMPLETE = 'REWIND_COMPLETE'
@@ -202,3 +202,5 @@ export default class Sprite extends EventDispatcher {
     }
   }
 }
+
+module.exports = Sprite
