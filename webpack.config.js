@@ -17,7 +17,6 @@ module.exports = {
     filename: 'danehansen-Sprite.min.js',
     library: ['danehansen', 'Sprite'],
     libraryTarget: 'umd',
-    umdNamedDefine: false,
   },
   externals: [
     {
