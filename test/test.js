@@ -6,6 +6,50 @@ const cleanup = require('jsdom-global')()
 import { spy } from 'sinon'
 
 describe('Sprite', function() {
+  describe.only('constructor', function() {
+    it('sets all arguments as properties', function() {
+      document.body.innerHTML = '<div class="test"></div>'
+      const div = document.querySelector('.test')
+      const columns = math.random(1, 10, true)
+      const frames = math.random(columns * 2, columns * 8, true)
+      const loop = math.randomBoolean()
+      const frameRate = math.random(1, 100)
+      const s = new Sprite(div, columns, frames, loop, frameRate)
+
+      expect(s._element).to.equal(div)
+      expect(s._columns).to.equal(columns)
+      expect(s._frames).to.equal(frames)
+      expect(s._loop).to.equal(loop)
+      expect(s.frameRate).to.equal(frameRate)
+      expect(s._progress).to.equal(0)
+      expect(s._frame).to.equal(0)
+      expect(s._actualFrame).to.equal(0)
+      expect(s.ease).to.equal('Linear.easeNone')
+      expect(s._style).to.equal(div.style)
+      expect(s._style.backgroundSize.length).to.be.above(0)
+    })
+
+    it('sets loop and frameRate as defaults', function() {
+      document.body.innerHTML = '<div class="test"></div>'
+      const div = document.querySelector('.test')
+      const columns = math.random(1, 10, true)
+      const frames = math.random(columns * 2, columns * 8, true)
+      const s = new Sprite(div, columns, frames)
+
+      expect(s._element).to.equal(div)
+      expect(s._columns).to.equal(columns)
+      expect(s._frames).to.equal(frames)
+      expect(s._loop).to.equal(false)
+      expect(s.frameRate).to.equal(60)
+      expect(s._progress).to.equal(0)
+      expect(s._frame).to.equal(0)
+      expect(s._actualFrame).to.equal(0)
+      expect(s.ease).to.equal('Linear.easeNone')
+      expect(s._style).to.equal(div.style)
+      expect(s._style.backgroundSize.length).to.be.above(0)
+    })
+  })
+
   describe('resize', function() {
     it('resizes Sprite', function() {
       document.body.innerHTML = '<div class="test"></div>'
