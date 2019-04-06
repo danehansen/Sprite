@@ -2,31 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>sprite</title>
+    <title>{{DESCRIPTION}}</title>
     <style>
-      body {
-  background-color: #fff;
-  color: #000;
-  font-family: Helvetica, Arial;
-  font-size: 12px;
-  padding: 50px;
-}
-
-body > div {
-  margin-top: 30px;
-  padding: 20px 0;
-  width: 600px;
-}
-
-body > div,
-footer {
-  border-top: 1px solid #000;
-}
-
-footer {
-  padding-top: 20px;
-}
-
+      {{STYLES}}
 
       figure {
         background-image: url(img/elephant_sprite_loop.jpg);
@@ -42,89 +20,7 @@ footer {
     </style>
   </head>
   <body>
-    <h1>Sprite <img src="https://img.shields.io/bundlephobia/minzip/@danehansen/sprite.svg" alt="npm bundle size (scoped)" /> <img src="https://img.shields.io/npm/dt/@danehansen/sprite.svg" alt="npm" /></h1>
-<p><strong>Class</strong> : public class <a href="https://github.com/danehansen/Sprite">Sprite</a><br />
-<strong>Inheritance</strong> : <a href="https://github.com/danehansen/Sprite">Sprite</a> &gt; <a href="https://github.com/danehansen/EventDispatcher">EventDispatcher</a> &gt; Object<br />
-<strong>Subclasses</strong> : <a href="https://github.com/danehansen/ForwardForward">ForwardForward</a>, <a href="https://github.com/danehansen/ForwardRewind">ForwardRewind</a>, <a href="https://github.com/danehansen/SuperSprite">SuperSprite</a></p>
-<p>A sprite class designed to easily create/manipulate animated sprite sheets, somewhat based off of AS3’s MovieClip class. This class depends on GreenSock’s TweenLite, which is available at <a href="http://greensock.com/">http://greensock.com/</a>. This package is under a MIT license, but TweenLite, which it uses, has it's own licensing agreement, so your usage of this package must adhere to <a href="https://greensock.com/licensing/">https://greensock.com/licensing/</a>.</p>
-<p>It is assumed that the sprite sheet will be laid out left to right, top to bottom. In addition to the layout of the sprite sheet, it is assumed that the element will be provided with a <code>background-image</code>.</p>
-<pre><code>{
-  background-imgage:url(http://goo.gl/XDwsNz);
-}
-</code></pre>
-<h2>Installation</h2>
-<p><code>npm install --save @danehansen/sprite</code></p>
-<h2>Usage</h2>
-<p>As a module:</p>
-<pre><code>import Sprite from '@danehansen/sprite';
-
-var s = new Sprite(document.getElementById('sprite'), 4, 30);
-</code></pre>
-<p>In your browser:</p>
-<pre><code>&lt;script src='danehansen-Sprite.min.js'&gt;&lt;/script&gt;
-&lt;script&gt;
-  var Sprite = window.danehansen.Sprite;
-  var s = new Sprite(document.getElementById('sprite'), 4, 30);
-&lt;/script&gt;
-</code></pre>
-<h2>Public Constants</h2>
-<ul>
-<li><strong>COMPLETE</strong> : String = 'COMPLETE'<br />
-[static] The Sprite.COMPLETE constant defines the value of the type property of a COMPLETE event object.</li>
-<li><strong>ENTER<em>FRAME</strong> : String = 'ENTER</em>FRAME'<br />
-[static] The Sprite.ENTER<em>FRAME constant defines the value of the type property of a ENTER</em>FRAME event object.</li>
-<li><strong>REWIND<em>COMPLETE</strong> : String = 'REWIND</em>COMPLETE'<br />
-[static] The Sprite.REWIND<em>COMPLETE constant defines the value of the type property of a REWIND</em>COMPLETE event object.</li>
-</ul>
-<h2>Public Properties</h2>
-<ul>
-<li><strong>ease</strong> : Function<br />
-Easing method used to move playhead. Set to Linear.easeNone by default.</li>
-<li><strong>element</strong> : Element<br />
-[Read-only] DOM Element manipulated.</li>
-<li><strong>frameRate</strong> : unit<br />
-The rate per second at which the sprite will play through. Set to 60 by default.</li>
-<li><strong>frames</strong> : uint<br />
-[Read-only] Number of frames in sprite.</li>
-</ul>
-<h2>Public Methods</h2>
-<ul>
-<li><strong>Sprite</strong>(element:Element, columns:uint, totalFrames:uint, loop:Boolean = false, frameRate:uint = 60)<br />
-Creates a Sprite object, using a provided DOM element, number of columns of the sprite sheet background image, the total number of frames, whether it will loop or not, and the frame rate.</li>
-<li><strong>destroy</strong>()<br />
-Kills any running animation of the sprite as well as calls clearEventListeners on the super class.</li>
-<li><strong>frame</strong>(value:int):*<br />
-Gets or sets the sprite’s frame. In a typical forward/rewind sprite, this number is limited between 0 and the total number of frames minus 1. In a looping sprite, this number can wrap and even be negative.</li>
-<li><strong>frameTo</strong>(value:Number)<br />
-Similar to setting the frame, except that the sprite will play to that frame at the current frame rate.</li>
-<li><strong>loop</strong>(value:Boolean):*<br />
-Gets or sets the sprite’s loop value. If the beginning and end sprite frames are the same, then you want this set to true. Otherwise the sprite is confined to a finite timeline of 0 to 1.</li>
-<li><strong>nextFrame</strong>()<br />
-Increments the sprite by one frame.</li>
-<li><strong>play</strong>(loop:Boolean = false)<br />
-Causes the sprite to play at the current frame rate until the end frame is reached. If loop is set to true and is a looping type sprite, the sprite will play indefinitely.</li>
-<li><strong>prevFrame</strong>()<br />
-Decrements the sprite by one frame.</li>
-<li><strong>progress</strong>(value:Number):*<br />
-Gets or sets the sprite’s progress. In a typical forward/rewind sprite, this number is limited between 0 and 1. In a looping sprite, this number can wrap and even be negative.</li>
-<li><strong>progressTo</strong>(value:Number)<br />
-Similar to setting the progress, except that the sprite will play to that progress point at the current frame rate.</li>
-<li><strong>resize</strong>()<br />
-Causes the sprite to recalculate it’s size. Only needed if the element has dynamic CSS sizing or if the element has been manually sized using JavaScript.</li>
-<li><strong>rewind</strong>(loop:Boolean = false)<br />
-Causes the sprite to play backwards at the current frame rate until the first frame is reached. If loop is set to true and is a looping type sprite, the sprite will play indefinitely.</li>
-<li><strong>stop</strong>()<br />
-Causes the sprite to stop any playback.</li>
-</ul>
-<h2>Events</h2>
-<ul>
-<li><strong>COMPLETE</strong><br />
-Dispatched whenever a Sprite object reaches it’s last frame.</li>
-<li><strong>ENTER_FRAME</strong><br />
-Dispatched whenever a Sprite object reaches a new frame.</li>
-<li><strong>REWIND_COMPLETE</strong><br />
-Dispatched whenever a Sprite object reaches it’s first frame.</li>
-</ul>
+    {{README}}
     <div id="example">
       <h2>EXAMPLE</h2>
       <figure id="sprite"></figure>
