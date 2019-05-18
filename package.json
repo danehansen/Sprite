@@ -1,6 +1,6 @@
 {
   "name": "@danehansen/sprite",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "sprite",
   "main": "danehansen-Sprite.min.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "author": "Dane Hansen <dane@danehansen.com> (http://www.danehansen.com/)",
   "license": "MIT",
   "devDependencies": {
-    "@danehansen/package-helpers": "^0.2.0",
+    "@danehansen/package-helpers": "^0.2.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
@@ -45,8 +45,8 @@
     "webpack": "^2.5.1"
   },
   "dependencies": {
-    "@danehansen/event-dispatcher": "^0.2.0",
-    "@danehansen/math": "^0.3.0",
+    "@danehansen/event-dispatcher": "^0.2.3",
+    "@danehansen/math": "^0.3.3",
     "gsap": "^1.19.1"
   },
   "repository": {
